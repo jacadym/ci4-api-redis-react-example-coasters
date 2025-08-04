@@ -1,0 +1,51 @@
+### List of Coasters
+GET {{ host }}/api/coasters
+Accept: application/json
+Content-Type: application/json
+
+### Create new Coster
+POST {{ host }}/api/coasters
+Accept: application/json
+Content-Type: application/json
+
+{
+  "nazwa": "Niepotrzebne pole",
+  "liczba_personelu": 14,
+  "liczba_klientow": 5000,
+  "dl_trasy": 1200,
+  "godziny_od": "8:00",
+  "godziny_do": "16:00"
+}
+
+### Update Coster
+PUT {{ host }}/api/coasters/2
+Accept: application/json
+Content-Type: application/json
+
+{
+  "nazwa": "Niepotrzebne pole",
+  "liczba_personelu": 14,
+  "liczba_klientow": 3000,
+  "dl_trasy": 1200,
+  "godziny_od": "10:00",
+  "godziny_do": "18:00"
+}
+
+### Add New Wagon
+POST {{ host }}/api/coasters/2/wagons
+Accept: application/json
+Content-Type: application/json
+
+{
+  "nazwa": "Nazwa wagonika",
+  "ilosc_miejsc": 20,
+  "predkosc_wagonu": 1.4
+}
+
+### Delete Wagon
+DELETE {{ host }}/api/coasters/2/wagons/23
+Accept: application/json
+Content-Type: application/json
+
+
+### End
