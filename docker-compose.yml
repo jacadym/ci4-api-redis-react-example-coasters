@@ -1,0 +1,24 @@
+services:
+  redis:
+    container_name: bb-coaster-redis
+    image: redis:8.0-alpine
+    ports:
+      - "6379:6397"
+    networks:
+      - coaster-network
+
+  webserver:
+    container_name: bb-coaster-webserver
+    image: nginx:1.29-alpine
+    networks:
+      - coaster-network
+
+  app:
+    container_name: bb-coaster-app
+    image: php:8.2-fpm
+    networks:
+      - coaster-network
+
+networks:
+  coaster-network:
+    external: true
