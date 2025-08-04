@@ -41,4 +41,21 @@ class Validation extends BaseConfig
     // --------------------------------------------------------------------
     // Rules
     // --------------------------------------------------------------------
+    public array $coasterNewRules = [
+        'liczba_personelu' => 'integer|required',
+        'liczba_klientow' => 'integer|required',
+        'dl_trasy' => 'integer|required',
+        'godziny_od' => 'required|regex_match[\A[012]?\d\:[0-5]\d\z]',
+        'godziny_do' => 'required|regex_match[\A[012]?\d\:[0-5]\d\z]',
+    ];
+    public array $coasterUpdateRules = [
+        'liczba_personelu' => 'integer|required',
+        'liczba_klientow' => 'integer|required',
+        'godziny_od' => 'required|regex_match[\A[012]?\d\:[0-5]\d\z]',
+        'godziny_do' => 'required|regex_match[\A[012]?\d\:[0-5]\d\z]',
+    ];
+    public array $wagonAddRules = [
+        'ilosc_miejsc' => 'integer|required',
+        'predkosc_wagonu' => 'numeric|required',
+    ];
 }
