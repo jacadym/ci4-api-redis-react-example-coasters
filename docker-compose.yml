@@ -1,24 +1,67 @@
+networks:
+  coaster-network:
+    external: true
+
+volumes:
+  vendor-dev:
+  vendor-prod:
+
 services:
   redis:
     container_name: bb-coaster-redis
     image: redis:8.0-alpine
     ports:
-      - "6379:6397"
+      - '6379:6397'
+    networks:
+      - coaster-network
+
+  php_fpm_dev:
+    container_name: bb-coaster-app-dev
+    image: bb-coaster-app:8.2
+    build:
+      dockerfile: ./docker/php-fpm/Dockerfile
+    working_dir: /var/www/dev
+    volumes:
+      - ./:/var/www/dev/
+      - ./env.dev:/var/www/dev/.env
+      - vendor-dev:/var/www/dev/vendor/
+    post_start:
+      - command: 'chmod 777 /var/www/dev/vendor'
+    links:
+      - redis
+    networks:
+      - coaster-network
+
+  php_fpm_prod:
+    container_name: bb-coaster-app-prod
+    image: bb-coaster-app:8.2
+    build:
+      dockerfile: ./docker/php-fpm/Dockerfile
+    working_dir: /var/www/prod
+    volumes:
+      - ./:/var/www/prod/
+      - ./env.prod:/var/www/prod/.env
+      - vendor-prod:/var/www/prod/vendor/
+    post_start:
+      - command: 'chmod 777 /var/www/prod/vendor'
+    links:
+      - redis
     networks:
       - coaster-network
 
   webserver:
     container_name: bb-coaster-webserver
     image: nginx:1.29-alpine
+    volumes:
+      - ./docker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./:/var/www/dev/
+      - ./:/var/www/prod/
+      - vendor-dev:/var/www/dev/vendor/
+      - vendor-prod:/var/www/prod/vendor/
+    depends_on:
+      - php_fpm_dev
+      - php_fpm_prod
+    ports:
+      - '80:80'
     networks:
       - coaster-network
-
-  app:
-    container_name: bb-coaster-app
-    image: php:8.2-fpm
-    networks:
-      - coaster-network
-
-networks:
-  coaster-network:
-    external: true
