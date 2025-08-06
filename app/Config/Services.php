@@ -2,14 +2,13 @@
 
 namespace Config;
 
-use App\Config\RedisClient;
-use Clue\React\Redis\RedisClient as ReactRedisClient;
+use App\Libraries\ReactRedis;
 use CodeIgniter\Config\BaseService;
 
 class Services extends BaseService
 {
     /**
-     * @return ReactRedisClient|object
+     * @return ReactRedis|object
      */
     public static function reactredis(bool $getShared = true)
     {
@@ -17,8 +16,6 @@ class Services extends BaseService
             return static::getSharedInstance('reactredis');
         }
 
-        $config = config(RedisClient::class);
-
-        return new ReactRedisClient($config->uri);
+        return new ReactRedis();
     }
 }
