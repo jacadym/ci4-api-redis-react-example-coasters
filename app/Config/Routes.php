@@ -15,8 +15,11 @@ $routes->get('/', [Home::class, 'index']);
  */
 $routes->group('api', static function ($routes) {
     $routes->get('coasters', [Coaster::class, 'index']);
+    $routes->get('coasters/(:num)', [Coaster::class, 'get']);
     $routes->post('coasters', [Coaster::class, 'new']);
     $routes->put('coasters/(:num)', [Coaster::class, 'update']);
+    $routes->delete('coasters/(:num)', [Coaster::class, 'delete']);
+    $routes->get('coasters/wagons', [Wagon::class, 'index']);
     $routes->post('coasters/(:num)/wagons', [Wagon::class, 'add']);
     $routes->delete('coasters/(:num)/wagons/(:num)', [Wagon::class, 'delete']);
 });

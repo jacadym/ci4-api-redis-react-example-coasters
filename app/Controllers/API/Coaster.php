@@ -3,6 +3,7 @@
 namespace App\Controllers\API;
 
 use App\Controllers\BaseController;
+use App\Libraries\ReactRedis;
 use CodeIgniter\API\ResponseTrait;
 use CodeIgniter\HTTP\ResponseInterface;
 
@@ -10,9 +11,29 @@ class Coaster extends BaseController
 {
     use ResponseTrait;
 
-    public function index(): string
+    /**
+     * @var ReactRedis
+     */
+    private $redis;
+
+    public function __construct()
     {
-        return 'List of coasters';
+        $this->redis = service('reactredis');
+    }
+
+    public function index(): ResponseInterface
+    {
+        $collection = $this->redis->getCollection(ReactRedis::HASH_COASTER);
+
+        return $this->respond(['status' => true, 'items' => $collection], 200);
+    }
+
+    public function get(int $coasterId): ResponseInterface
+    {
+        $key = ReactRedis::getKeyCoaster($coasterId);
+        $data = $this->redis->getData(ReactRedis::HASH_COASTER, $key);
+
+        return $this->respond(['status' => true, 'item' => $data], 200);
     }
 
     public function new(): ResponseInterface
@@ -34,7 +55,12 @@ class Coaster extends BaseController
 
         $validData = $this->validator->getValidated();
 
-        return $this->respondCreated($validData);
+        $coasterId = $this->redis->getSequence('seq_coaster');
+        $key = ReactRedis::getKeyCoaster($coasterId);
+        $validData['coaster_id'] = $coasterId;
+        $this->redis->createData(ReactRedis::HASH_COASTER, $key, $validData);
+
+        return $this->respondCreated(['status' => true, 'id' => $coasterId]);
     }
 
     public function update(int $coasterId): ResponseInterface
@@ -56,6 +82,18 @@ class Coaster extends BaseController
 
         $validData = $this->validator->getValidated();
 
-        return $this->respondUpdated($validData);
+        $key = ReactRedis::getKeyCoaster($coasterId);
+        $validData['coaster_id'] = $coasterId;
+        $this->redis->updateData(ReactRedis::HASH_COASTER, $key, $validData);
+
+        return $this->respondUpdated(['status' => true, 'id' => $coasterId]);
+    }
+
+    public function delete(int $coasterId): ResponseInterface
+    {
+        $key = ReactRedis::getKeyCoaster($coasterId);
+        $this->redis->deleteData(ReactRedis::HASH_COASTER, $key);
+
+        return $this->respondDeleted(['status' => true, 'id' => $coasterId]);
     }
 }
