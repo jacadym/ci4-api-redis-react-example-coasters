@@ -2,7 +2,7 @@
 
 namespace App\Libraries;
 
-use App\Config\RedisClient as RedisClientConfig;
+use Config\Custom as CustomConfig;
 use Clue\React\Redis\RedisClient as ReactRedisClient;
 use React\EventLoop\Loop;
 
@@ -21,14 +21,14 @@ class ReactRedis
     private $client;
 
     /**
-     * @var RedisClientConfig
+     * @var CustomConfig
      */
     private $config;
 
     public function __construct()
     {
-        $this->config = config(RedisClientConfig::class);
-        $this->client = new ReactRedisClient($this->config->uri);
+        $this->config = config(CustomConfig::class);
+        $this->client = new ReactRedisClient($this->config->redisUri);
     }
 
     /**
@@ -40,7 +40,7 @@ class ReactRedis
     }
 
     /**
-     * @return RedisClientConfig|object|null
+     * @return CustomConfig|object|null
      */
     public function getConfig()
     {
@@ -177,11 +177,11 @@ class ReactRedis
 
     private function getHash(string $hashName): string
     {
-        return $this->config->prefixHash . $hashName;
+        return $this->config->redisPrefixHash . $hashName;
     }
 
     private function getKey(string $keyName): string
     {
-        return $this->config->prefixKey . $keyName;
+        return $this->config->redisPrefixKey . $keyName;
     }
 }

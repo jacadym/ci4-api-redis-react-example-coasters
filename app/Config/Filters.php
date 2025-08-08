@@ -2,6 +2,7 @@
 
 namespace Config;
 
+use App\Filters\AllowIpFilter;
 use CodeIgniter\Config\Filters as BaseFilters;
 use CodeIgniter\Filters\Cors;
 use CodeIgniter\Filters\CSRF;
@@ -34,6 +35,7 @@ class Filters extends BaseFilters
         'forcehttps'    => ForceHTTPS::class,
         'pagecache'     => PageCache::class,
         'performance'   => PerformanceMetrics::class,
+        'allow_ip'      => AllowIpFilter::class,
     ];
 
     /**
@@ -69,13 +71,9 @@ class Filters extends BaseFilters
      */
     public array $globals = [
         'before' => [
-            // 'honeypot',
-            // 'csrf',
-            // 'invalidchars',
+            'allow_ip',
         ],
         'after' => [
-            // 'honeypot',
-            // 'secureheaders',
         ],
     ];
 
