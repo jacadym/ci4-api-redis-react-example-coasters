@@ -3,47 +3,62 @@ GET {{ host }}/api/coasters
 Accept: application/json
 Content-Type: application/json
 
-### Create new Coster
+### Get Coaster
+GET {{ host }}/api/coasters/8
+Accept: application/json
+Content-Type: application/json
+
+### Create new Coaster
 POST {{ host }}/api/coasters
 Accept: application/json
 Content-Type: application/json
 
 {
   "nazwa": "Niepotrzebne pole",
-  "liczba_personelu": 14,
-  "liczba_klientow": 5000,
-  "dl_trasy": 1200,
-  "godziny_od": "8:00",
-  "godziny_do": "16:00"
+  "liczba_personelu": 7,
+  "liczba_klientow": 50000,
+  "dl_trasy": 1500,
+  "godziny_od": "12:00",
+  "godziny_do": "13:00"
 }
 
-### Update Coster
-PUT {{ host }}/api/coasters/2
+### Update Coaster
+PUT {{ host }}/api/coasters/10
 Accept: application/json
 Content-Type: application/json
 
 {
   "nazwa": "Niepotrzebne pole",
-  "liczba_personelu": 14,
-  "liczba_klientow": 3000,
-  "dl_trasy": 1200,
-  "godziny_od": "10:00",
+  "liczba_personelu": 11,
+  "liczba_klientow": 5000,
+  "dl_trasy": 800,
+  "godziny_od": "8:00",
   "godziny_do": "18:00"
 }
 
+### Delete Coaster
+DELETE {{ host }}/api/coasters/2
+Accept: application/json
+Content-Type: application/json
+
+### List of Wagons
+GET {{ host }}/api/coasters/wagons
+Accept: application/json
+Content-Type: application/json
+
 ### Add New Wagon
-POST {{ host }}/api/coasters/2/wagons
+POST {{ host }}/api/coasters/10/wagons
 Accept: application/json
 Content-Type: application/json
 
 {
   "nazwa": "Nazwa wagonika",
-  "ilosc_miejsc": 20,
+  "ilosc_miejsc": 50,
   "predkosc_wagonu": 1.4
 }
 
 ### Delete Wagon
-DELETE {{ host }}/api/coasters/2/wagons/23
+DELETE {{ host }}/api/coasters/10/wagons/13
 Accept: application/json
 Content-Type: application/json
 

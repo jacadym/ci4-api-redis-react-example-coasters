@@ -175,12 +175,12 @@ class ReactRedis
         return sprintf(self::KEY_WAGON, $coasterId, $wagonId);
     }
 
-    private function getHash(string $hashName): string
+    public function getHash(string $hashName): string
     {
         return $this->config->redisPrefixHash . $hashName;
     }
 
-    private function getKey(string $keyName): string
+    public function getKey(string $keyName): string
     {
         return $this->config->redisPrefixKey . $keyName;
     }
