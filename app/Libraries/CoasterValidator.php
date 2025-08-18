@@ -29,7 +29,6 @@ class CoasterValidator
     {
         $this->coasterDTO = $coasterDTO;
         $this->calculated['calculated'] = false;
-        $this->calculate();
     }
 
     public function calculate(): void
